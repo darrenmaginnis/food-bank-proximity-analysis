@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include "Location.h"
 
 using namespace std;
 
@@ -19,16 +20,13 @@ void readFile()
 }
 
 
-
 // Function name   : CalcDistace
-// Description     : Calculation of Distance between Addresses
-// Return type     : double 
-// Argument        : double aEasting
-// Argument        : double aNorthing
-// Argument        : double bEasting
-// Argument        : double bNorthing
+// Description     : Calculation of Distance between Locations
+// Return type     : inline double 
+// Argument        : Location a
+// Argument        : Location b
 
-inline double CalcDistace(double aEasting, double aNorthing, double bEasting, double bNorthing){
-	return abs( sqrt( ( pow( ( bEasting - aEasting ), 2 ) ) + ( pow( ( bNorthing - aNorthing ), 2 ) ) ) );
+inline double CalcDistace(Location a, Location b){
+	return abs( sqrt( ( pow( ( b.Easting - a.Easting ), 2 ) ) + ( pow( ( b.Northing - a.Northing ), 2 ) ) ) );
 } 
 #endif //__HELPERMETHODS_H__

@@ -16,6 +16,7 @@
 #include<iostream>
 #include <fstream>
 #include <mpi.h>
+#include "HelperMethods.h"
 
 
 using namespace std;
@@ -53,6 +54,7 @@ int main(int argc, char *argv[])
 
 
 
+
 // Function name   : processSlave
 // Description     : 
 // Return type     : void
@@ -60,17 +62,6 @@ int main(int argc, char *argv[])
 void processSlave(){
 
 	readFile();
-}
-
-void readFile()
-{
-		// Read and process the input data
-		double foodBanks = 0;
-		ifstream in("foodbank.dat");
-		while(in>>foodBanks)
-		{
-		
-		}
 }
 
 

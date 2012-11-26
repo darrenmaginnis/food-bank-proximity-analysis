@@ -19,4 +19,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="foodbanks.dat">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="residences.dat">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

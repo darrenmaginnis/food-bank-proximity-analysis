@@ -14,6 +14,7 @@
 
 
 #include<iostream>
+#include <fstream>
 #include <mpi.h>
 
 
@@ -58,9 +59,19 @@ int main(int argc, char *argv[])
 
 void processSlave(){
 
-
+	readFile();
 }
 
+void readFile()
+{
+		// Read and process the input data
+		double foodBanks = 0;
+		ifstream in("foodbank.dat");
+		while(in>>foodBanks)
+		{
+		
+		}
+}
 
 
 // Function name   : processMaster
@@ -68,6 +79,6 @@ void processSlave(){
 // Return type     :  void
 
 void processMaster(){	
-
+	readFile();
 
 }

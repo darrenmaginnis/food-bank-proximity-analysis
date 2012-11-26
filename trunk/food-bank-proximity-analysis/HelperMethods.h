@@ -3,20 +3,26 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <cmath>
 #include "Location.h"
 
 using namespace std;
 
-void readFile()
+vector<Location> readFile(string fName)
 {
+
+		vector<Location> loc;
 		// Read and process the input data
-		double foodBanks = 0;
-		ifstream in("foodbank.dat");
-		while(in>>foodBanks)
+		double foodBanks,east,north = 0;
+		ifstream in(fName);
+		while(in>>east>>north)
 		{
-		
+			loc.push_back(Location(east,north));
+
 		}
+
+		return loc;
 }
 
 

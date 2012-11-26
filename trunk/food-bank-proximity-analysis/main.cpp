@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 void processSlave(){
 
-	readFile();
+	readFile("foodbanks.dat");
 }
 
 
@@ -67,6 +67,6 @@ void processSlave(){
 // Return type     :  void
 
 void processMaster(){	
-	readFile();
+	readFile("foodbanks.dat");
 
 }

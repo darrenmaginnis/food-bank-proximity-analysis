@@ -52,9 +52,6 @@ int main(int argc, char *argv[])
 	return EXIT_FAILURE;
 }
 
-
-
-
 // Function name   : processSlave
 // Description     : 
 // Return type     : void

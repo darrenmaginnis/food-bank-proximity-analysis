@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <cmath>
+#include <iomanip>
 #include "Location.h"
 
 using namespace std;
@@ -14,8 +15,9 @@ vector<Location> readFile(string fName)
 
 		vector<Location> loc;
 		// Read and process the input data
-		double foodBanks,east,north = 0;
+		double east,north = 0;
 		ifstream in(fName);
+		setprecision(3);
 		while(in>>east>>north)
 		{
 			loc.push_back(Location(east,north));
@@ -24,10 +26,19 @@ vector<Location> readFile(string fName)
 		return loc;
 }
 
-bool getNextRes(ifstream &f, int offset, Location &loc)
+
+
+// Function name   : getNextLocation
+// Description     : sets loc as the next location from offset and returns true if sucessful
+// Return type     : bool 
+// Argument        : IN ifstream &f
+// Argument        : IN int offset
+// Argument        : OUT Location &loc
+
+bool getNextLocation(ifstream &f, int offset, Location &loc)
 {
 	
-	double easting, northing;
+	double easting = 0.0, northing = 0.0;
 	try
 	{
 			for(int i = 0; i < offset; i++)

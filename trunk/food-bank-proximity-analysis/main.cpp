@@ -20,12 +20,8 @@
 
 
 using namespace std;
-
 int poolSize, instance;
-DataSet results; 
-void slaveLogic();
-void masterLogic();
-void CommonLogic();
+DataSet commonLogic();
 
 
 // Function name   : main
@@ -43,49 +39,31 @@ int main(int argc, char *argv[])
 		MPI_Comm_size(MPI_COMM_WORLD, &poolSize);
 		MPI_Comm_rank(MPI_COMM_WORLD, &instance);
 		
-		// start
-		CommonLogic();
+		DataSet processResults = commonLogic();
 
-		if(instance == 0) 
-			masterLogic();
-		else
-			slaveLogic();
+		// Create a derived type
+		MPI_Datatype dataSetType = createDataSetType();
+		DataSet* allResults = new DataSet[poolSize];
 		
+		MPI_Gather(&processResults, 1, dataSetType, //send info
+			allResults, 1, dataSetType, //recieve info
+			0, MPI_COMM_WORLD); //world info
+
+		if(instance == 0) {
+			printResults(poolSize, allResults);
+		}
+
+		//clean up
+		delete[] allResults;
+		
+		// Free the recType
+		MPI_Type_free(&dataSetType);
+
 		//shutdown
 		return MPI_Finalize();
 	}
 	return EXIT_FAILURE;
 }
-
-// Function name   : slaveLogic
-// Description     : Slave process sends info to the mastet process
-// Return type     : void
-
-void slaveLogic(){
-	//Create the dataSetType
-	MPI_Datatype dataSetType = createDataSetType();
-
-
-
-	// Free the dataSetType
-	MPI_Type_free(&dataSetType);
-}
-
-
-// Function name   : masterLogic
-// Description     : Master process collects info from the slaves and prints results to screen
-// Return type     : void
-
-void masterLogic(){	
-	//Create the dataSetType
-	MPI_Datatype dataSetType = createDataSetType();
-
-
-
-	// Free the dataSetType
-	MPI_Type_free(&dataSetType);
-}
-
 
 
 
@@ -93,7 +71,8 @@ void masterLogic(){
 // Description     : Logic common to all proccesses
 // Return type     : void 
 
-void CommonLogic(){
+DataSet commonLogic(){
+	DataSet results; 
 	//record counter
 	results.processRank = instance;
 	int count = 0;
@@ -149,4 +128,6 @@ void CommonLogic(){
 	results.freq[1] = results.count[1] / ((double)count);
 	results.freq[2] = results.count[2] / ((double)count);
 	results.freq[3] = results.count[3] / ((double)count);
+
+	return results;
 }

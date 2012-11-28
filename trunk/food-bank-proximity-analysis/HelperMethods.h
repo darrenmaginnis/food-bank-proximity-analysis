@@ -12,7 +12,6 @@ using namespace std;
 
 //DataSet type
 typedef struct {
-	int processRank;
 	// 0 = 0 to 1 km, 1 = > 1 to 2 km, 2 = > 2 to 5 km, 3 = > 5 km
 	int count[4];
 	double freq[4];
@@ -114,17 +113,17 @@ MPI_Datatype createDataSetType()
 	// Set-up the arguments for the call to the datatype constructor
 	MPI_Datatype newType;
 
-	int blocklens[] = { 5, 4 };	// 5 ints, 4 doubles
+	int blocklens[] = { 4, 4 };	// 4 ints, 4 doubles
 	MPI_Datatype oldTypes[] = {MPI_INT , MPI_DOUBLE };
 
 	MPI_Aint indices[2];
 
 	indices[0] = 0;
 	MPI_Type_extent(MPI_INT, &indices[1]);
-	indices[1] *= 5;
+	indices[1] *= 4;
 
 	// Call the datatype constructor
-	MPI_Type_struct(9, blocklens, indices, oldTypes, &newType);
+	MPI_Type_struct(8, blocklens, indices, oldTypes, &newType);
 
 	// Commit the new datatype
 	MPI_Type_commit(&newType);

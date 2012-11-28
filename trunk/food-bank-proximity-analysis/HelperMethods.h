@@ -77,18 +77,18 @@ void printResults(int numProcs, DataSet data[])
 		cout << "Process #" << i+1 << "for 3333" << " addresses..." << endl;
 		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
 		cout << "-------------------- \t -------------- \t --------------" << endl;
-		cout << "0 - 1 \t" << /*first address value*/"" << data[i].freq[0] << endl;
-		cout << "1 - 2 \t" << /*first address value*/"" << data[i].freq[1] << endl;
-		cout << "2 - 5 \t" << /*first address value*/"" << data[i].freq[2] << endl;
-		cout << " > 5 \t"  << /*first address value*/"" << data[i].freq[3] << endl;
+		cout << "0 - 1 \t" << data[i].count[0] <<"/t" << data[i].freq[0] << endl;
+		cout << "1 - 2 \t" << data[i].count[1] <<"/t" << data[i].freq[1] << endl;
+		cout << "2 - 5 \t" << data[i].count[2] <<"/t"  << data[i].freq[2] << endl;
+		cout << " > 5 \t"  << data[i].count[3] <<"/t" << data[i].freq[3] << endl;
 
 		cout << "Aggregate results for all 10000 addresses..." << endl;
 		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
 		cout << "-------------------- \t -------------- \t --------------" << endl;
-		cout << "0 - 1 \t" << /*first address value*/"" << data[i].freq[0] << endl;
-		cout << "1 - 2 \t" << /*first address value*/"" << data[i].freq[1] << endl;
-		cout << "2 - 5 \t" << /*first address value*/"" << data[i].freq[2] << endl;
-		cout << " > 5 \t"  << /*first address value*/"" << data[i].freq[3] << endl;
+		cout << "0 - 1 \t" << data[i].count[0] <<"/t" << data[i].freq[0] << endl;
+		cout << "1 - 2 \t" << data[i].count[1] <<"/t" << data[i].freq[1] << endl;
+		cout << "2 - 5 \t" << data[i].count[2] <<"/t"  << data[i].freq[2] << endl;
+		cout << " > 5 \t"  << data[i].count[3] <<"/t" << data[i].freq[3] << endl;
 		
 	}
 

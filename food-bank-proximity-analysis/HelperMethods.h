@@ -66,6 +66,30 @@ bool getNextLocation(ifstream &f, int offset, Location &loc)
 	return true;
 }
 
+void printResults(int numProcs, DataSet data[])
+{
+	int const NUM_VALUES = 4;
+	string numbers[NUM_VALUES] = {"0 - 1","1 - 2","2 - 5"," >5"};
+	cout << "Proximity of Residential Addresses to Foodbanks in Toronto" << endl;
+	cout << "----------------------------------------------------------" << endl;
+	cout << "Number of processes: " << numProcs;
+	cout << "Elapsed Time in Seconds: ";
+	for(int i = 0; i <= numProcs; i++)
+	{
+		cout << "Process #" << data[i].processRank << "for 3333" << " addresses..." << endl;
+		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
+		cout << "-------------------- \t -------------- \t --------------" << endl;
+		cout << numbers[i] << "\t" << /*first address value*/"" << data[i].freq << endl;
+
+		cout << "Aggregate results for all 10000 addresses..." << endl;
+		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
+		cout << "-------------------- \t -------------- \t --------------" << endl;
+		cout << numbers[i] << "\t" << /*first address value*/"" << data[i].freq << endl;
+		
+	}
+
+}
+
 // Function name   : CalcSquareDistance
 // Description     : Calculation of Squared Distance between Locations, this method is faster for comparing 2 distances as it doesn't need to get the squareroot
 // Return type     : inline double 

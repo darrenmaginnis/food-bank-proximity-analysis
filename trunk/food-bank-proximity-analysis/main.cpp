@@ -50,7 +50,8 @@ int main(int argc, char *argv[])
 		vector<Location> foodBanks = readFile("foodbanks.dat");
 
 		//Open the residences.dat
-		ifstream residence("residences.dat");
+		string res = "residences.dat";
+		ifstream residence(res.c_str());
 
 		vector<Location>::const_iterator IT;
 		Location loc;
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
 		}
 
 		//for each location after first
-		while( getNextLocation( residence, poolSize, loc ) && count < 10000 ) 
+		while( getNextLocation( residence, poolSize, loc ) ) 
 		{
 			++count;
 			double closest = (double)INT_MAX;//set number realy high
@@ -99,12 +100,12 @@ int main(int argc, char *argv[])
 		results.freq[1] = results.count[1] / ((double)count) * 100;
 		results.freq[2] = results.count[2] / ((double)count) * 100;
 		results.freq[3] = results.count[3] / ((double)count) * 100;
-		results.total = count;
+		//results.total = count;
 
 		// Create a derived type
 		MPI_Datatype dataSetType = createDataSetType();
 		DataSet* allResults = new DataSet[poolSize];
-		
+				
 		MPI_Gather(&results, 1, dataSetType, //send info
 			allResults, 1, dataSetType, //recieve info
 			0, MPI_COMM_WORLD); //world info

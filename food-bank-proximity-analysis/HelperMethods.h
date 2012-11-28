@@ -10,6 +10,16 @@
 
 using namespace std;
 
+//DataSet type
+typedef struct {
+	int processRank;
+	// 0 = 0 to 1 km, 1 = > 1 to 2 km, 2 = > 2 to 5 km, 3 = > 5 km
+	int count[4];
+	double freq[4];
+} DataSet;
+
+
+
 vector<Location> readFile(string fName)
 {
 
@@ -41,31 +51,20 @@ bool getNextLocation(ifstream &f, int offset, Location &loc)
 	double easting = 0.0, northing = 0.0;
 	try
 	{
-			for(int i = 0; i < offset; i++)
-			{
-				f >> easting >> northing;		
-			}
-			loc = Location(easting,northing);
+		for(int i = 0; i < offset; i++)
+		{
+			f >> easting >> northing;		
+		}
+		loc = Location(easting,northing);
 	}
-	catch(...)
+	catch(exception ex)
 	{
+		cerr << ex.what() << endl;
 		return false;
 	}
 
 	return true;
 }
-
-// Function name   : CalcDistace
-// Description     : Calculation of Distance between Locations
-// Return type     : inline double 
-// Argument        : Location a
-// Argument        : Location b
-
-//inline double CalcDistance(Location a, Location b){
-//	return abs( sqrt( ( pow( ( b.Easting - a.Easting ), 2 ) ) + ( pow( ( b.Northing - a.Northing ), 2 ) ) ) );
-//} 
-
-
 
 // Function name   : CalcSquareDistance
 // Description     : Calculation of Squared Distance between Locations, this method is faster for comparing 2 distances as it doesn't need to get the squareroot
@@ -78,10 +77,32 @@ inline double CalcSquareDistance(Location a, Location b){
 } 
 
 
-struct DataSet{
-	// 0 = 0 to 1 km, 1 = > 1 to 2 km, 2 = > 2 to 5 km, 3 = > 5 km
-	int count[4];
-	double freq[4];
-};
+// Function name   : createDataSetType
+// Description     : Creates the DataType for sending the DataSet over MPI comunication
+// Return type     : MPI_Datatype 
+
+MPI_Datatype createDataSetType()
+{
+	// Set-up the arguments for the call to the datatype constructor
+	MPI_Datatype newType;
+
+	int blocklens[] = { 5, 4 };	// 5 ints, 4 doubles
+	MPI_Datatype oldTypes[] = {MPI_INT , MPI_DOUBLE };
+
+	MPI_Aint indices[2];
+
+	indices[0] = 0;
+	MPI_Type_extent(MPI_INT, &indices[1]);
+	indices[1] *= 5;
+
+	// Call the datatype constructor
+	MPI_Type_struct(9, blocklens, indices, oldTypes, &newType);
+
+	// Commit the new datatype
+	MPI_Type_commit(&newType);
+
+	// Return the new datatype
+	return newType;
+}
 
 #endif //__HELPERMETHODS_H__

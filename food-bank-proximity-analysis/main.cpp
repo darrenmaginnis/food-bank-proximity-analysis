@@ -23,8 +23,8 @@ using namespace std;
 
 int poolSize, instance;
 DataSet results; 
-void processSlave();
-void processMaster();
+void slaveLogic();
+void masterLogic();
 void CommonLogic();
 
 
@@ -47,9 +47,9 @@ int main(int argc, char *argv[])
 		CommonLogic();
 
 		if(instance == 0) 
-			processMaster();
+			masterLogic();
 		else
-			processSlave();
+			slaveLogic();
 		
 		//shutdown
 		return MPI_Finalize();
@@ -57,21 +57,33 @@ int main(int argc, char *argv[])
 	return EXIT_FAILURE;
 }
 
-// Function name   : processSlave
+// Function name   : slaveLogic
 // Description     : Slave process sends info to the mastet process
 // Return type     : void
 
-void processSlave(){
+void slaveLogic(){
+	//Create the dataSetType
+	MPI_Datatype dataSetType = createDataSetType();
 
+
+
+	// Free the dataSetType
+	MPI_Type_free(&dataSetType);
 }
 
 
-// Function name   : processMaster
+// Function name   : masterLogic
 // Description     : Master process collects info from the slaves and prints results to screen
 // Return type     : void
 
-void processMaster(){	
+void masterLogic(){	
+	//Create the dataSetType
+	MPI_Datatype dataSetType = createDataSetType();
 
+
+
+	// Free the dataSetType
+	MPI_Type_free(&dataSetType);
 }
 
 
@@ -81,6 +93,7 @@ void processMaster(){
 
 void CommonLogic(){
 	//record counter
+	results.processRank = instance;
 	int count = 0;
 	//Read in all foodbank locations
 	vector<Location> foodBanks = readFile("foodbanks.dat");

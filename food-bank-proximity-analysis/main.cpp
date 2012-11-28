@@ -74,7 +74,6 @@ int main(int argc, char *argv[])
 DataSet commonLogic(){
 	DataSet results; 
 	//record counter
-	results.processRank = instance;
 	int count = 0;
 	//Read in all foodbank locations
 	vector<Location> foodBanks = readFile("foodbanks.dat");

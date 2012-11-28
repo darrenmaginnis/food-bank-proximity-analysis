@@ -13,6 +13,7 @@ using namespace std;
 //DataSet type
 typedef struct {
 	// 0 = 0 to 1 km, 1 = > 1 to 2 km, 2 = > 2 to 5 km, 3 = > 5 km
+	int total;
 	int count[4];
 	double freq[4];
 } DataSet;
@@ -77,11 +78,11 @@ void printResults(int numProcs, DataSet data[], double elapsed)
 {
 	cout << "Proximity of Residential Addresses to Foodbanks in Toronto" << endl;
 	cout << "----------------------------------------------------------" << endl;
-	cout << "Number of processes: " << numProcs;
-	cout << "Elapsed Time in Seconds: " << elapsed;
+	cout << "Number of processes: " << numProcs << endl;
+	cout << "Elapsed Time in Seconds: " << elapsed << endl;
 	for(int i = 0; i <= numProcs; i++)
 	{
-		cout << "Process #" << i+1 << "for 3333" << " addresses..." << endl;
+		cout << "Process #" << i+1 << "for " << data[i].total << " addresses..." << endl;
 		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
 		cout << "-------------------- \t -------------- \t --------------" << endl;
 		cout << "0 - 1 \t" << data[i].count[0] <<"/t" << data[i].freq[0] << endl;
@@ -89,13 +90,13 @@ void printResults(int numProcs, DataSet data[], double elapsed)
 		cout << "2 - 5 \t" << data[i].count[2] <<"/t"  << data[i].freq[2] << endl;
 		cout << " > 5 \t"  << data[i].count[3] <<"/t" << data[i].freq[3] << endl;
 
-		cout << "Aggregate results for all 10000 addresses..." << endl;
+		/*cout << "Aggregate results for all 10000 addresses..." << endl;
 		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
 		cout << "-------------------- \t -------------- \t --------------" << endl;
 		cout << "0 - 1 \t" << data[i].count[0] <<"/t" << data[i].freq[0] << endl;
 		cout << "1 - 2 \t" << data[i].count[1] <<"/t" << data[i].freq[1] << endl;
 		cout << "2 - 5 \t" << data[i].count[2] <<"/t"  << data[i].freq[2] << endl;
-		cout << " > 5 \t"  << data[i].count[3] <<"/t" << data[i].freq[3] << endl;
+		cout << " > 5 \t"  << data[i].count[3] <<"/t" << data[i].freq[3] << endl;*/
 		
 	}
 
@@ -121,14 +122,14 @@ MPI_Datatype createDataSetType()
 	// Set-up the arguments for the call to the datatype constructor
 	MPI_Datatype newType;
 
-	int blocklens[] = { 4, 4 };	// 4 ints, 4 doubles
+	int blocklens[] = { 5, 4 };	// 5 ints, 4 doubles
 	MPI_Datatype oldTypes[] = {MPI_INT , MPI_DOUBLE };
 
 	MPI_Aint indices[2];
 
 	indices[0] = 0;
 	MPI_Type_extent(MPI_INT, &indices[1]);
-	indices[1] *= 4;
+	indices[1] *= 5;
 
 	// Call the datatype constructor
 	MPI_Type_struct(2, blocklens, indices, oldTypes, &newType);

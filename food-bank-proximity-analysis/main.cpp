@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 		}
 
 		//for each location after first
-		while( getNextLocation( residence, poolSize, loc ) &&  count <= 10000 ) //TODO: Remove the && ++i < 10000 to run full dataset
+		while( getNextLocation( residence, poolSize, loc ) ) 
 		{
 			++count;
 			double closest = (double)INT_MAX;//set number realy high
@@ -95,10 +95,11 @@ int main(int argc, char *argv[])
 				++results.count[3];
 		}
 		//calc the freq
-		results.freq[0] = results.count[0] / ((double)count);
-		results.freq[1] = results.count[1] / ((double)count);
-		results.freq[2] = results.count[2] / ((double)count);
-		results.freq[3] = results.count[3] / ((double)count);
+		results.freq[0] = results.count[0] / ((double)count) * 100;
+		results.freq[1] = results.count[1] / ((double)count) * 100;
+		results.freq[2] = results.count[2] / ((double)count) * 100;
+		results.freq[3] = results.count[3] / ((double)count) * 100;
+		results.total = count;
 
 		// Create a derived type
 		MPI_Datatype dataSetType = createDataSetType();

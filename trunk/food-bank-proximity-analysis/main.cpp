@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 		}
 
 		//for each location after first
-		while( getNextLocation( residence, poolSize, loc ) ) 
+		while( getNextLocation( residence, poolSize, loc ) && count < 10000 ) 
 		{
 			++count;
 			double closest = (double)INT_MAX;//set number realy high

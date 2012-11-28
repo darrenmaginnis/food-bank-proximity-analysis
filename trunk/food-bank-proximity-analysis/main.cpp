@@ -22,7 +22,7 @@
 using namespace std;
 
 int poolSize, instance;
-int results[4] = {0}; // 0 = 0 to 1 km, 1 = > 1 to 2 km, 2 = > 2 to 5 km, 3 = > 5 km
+DataSet results; 
 void processSlave();
 void processMaster();
 void CommonLogic();
@@ -67,7 +67,7 @@ void processSlave(){
 
 
 // Function name   : processMaster
-// Description     : Master process collects info from the slaves
+// Description     : Master process collects info from the slaves and prints results to screen
 // Return type     : void
 
 void processMaster(){	
@@ -80,70 +80,58 @@ void processMaster(){
 // Return type     : void 
 
 void CommonLogic(){
-
-
+	//record counter
+	int count = 0;
 	//Read in all foodbank locations
 	vector<Location> foodBanks = readFile("foodbanks.dat");
 
 	//Open the residences.dat
 	ifstream residence("residences.dat");
 
-	//read in the fist location
+	vector<Location>::const_iterator IT;
 	Location loc;
 
-
-	vector<Location>::const_iterator IT;
-
+	//read in the fist location
 	if( getNextLocation( residence, instance + 1, loc ) ) 
 	{
+		++count;
 		double closest = (double)INT_MAX;//set number realy high
 		for( IT = foodBanks.begin(); IT != foodBanks.end(); ++IT )
-		{
-			double distance = CalcDistance( *IT, loc ) / 1000.0;
-			double closest = min(closest, distance);
-			
-		}		
-		if(closest < 1)
-			{
-				results[0]++;
-			}
-			else if( closest < 2 )
-			{
-				results[1]++;
-			}
-			else if( closest < 5 )
-			{
-				results[2]++;
-			}
-			else
-			{
-				results[3]++;
-			}
-	}
-	int i = 0;
-	//for each location after
-	while( getNextLocation( residence, poolSize, loc ) && ++i < 10000 )
-	{
-		for( IT = foodBanks.begin(); IT != foodBanks.end(); ++IT )
-		{
-			double distance = CalcDistance( *IT, loc );
-			if(distance < 1)
-			{
-				results[0]++;
-			}
-			else if( distance < 2 )
-			{
-				results[1]++;
-			}
-			else if( distance < 5 )
-			{
-				results[2]++;
-			}
-			else
-			{
-				results[3]++;
-			}
-		}
-	}
+			closest = min(closest, CalcSquareDistance( *IT, loc ));
 
+		closest = (sqrt(closest) / 1000.0); // calc the acual distance
+
+		if(closest < 1)
+			++results.count[0];
+		else if( closest < 2 )
+			++results.count[1];
+		else if( closest < 5 )
+			++results.count[2];
+		else
+			++results.count[3];
+	}
+	//for each location after first
+	while( getNextLocation( residence, poolSize, loc ) &&  count <= 10000 ) //TODO: Remove the && ++i < 10000 to run full dataset
+	{
+		++count;
+		double closest = (double)INT_MAX;//set number realy high
+		for( IT = foodBanks.begin(); IT != foodBanks.end(); ++IT )
+			closest = min(closest, CalcSquareDistance( *IT, loc ));
+
+		closest = (sqrt(closest) / 1000.0); // calc the acual distance
+
+		if(closest < 1)
+			++results.count[0];
+		else if( closest < 2 )
+			++results.count[1];
+		else if( closest < 5 )
+			++results.count[2];
+		else
+			++results.count[3];
+	}
+	//calc the freq
+	results.freq[0] = results.count[0] / ((double)count);
+	results.freq[1] = results.count[1] / ((double)count);
+	results.freq[2] = results.count[2] / ((double)count);
+	results.freq[3] = results.count[3] / ((double)count);
 }

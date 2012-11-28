@@ -61,12 +61,27 @@ bool getNextLocation(ifstream &f, int offset, Location &loc)
 // Argument        : Location a
 // Argument        : Location b
 
-inline double CalcDistance(Location a, Location b){
-	return abs( sqrt( ( pow( ( b.Easting - a.Easting ), 2 ) ) + ( pow( ( b.Northing - a.Northing ), 2 ) ) ) );
-} 
+//inline double CalcDistance(Location a, Location b){
+//	return abs( sqrt( ( pow( ( b.Easting - a.Easting ), 2 ) ) + ( pow( ( b.Northing - a.Northing ), 2 ) ) ) );
+//} 
+
+
+
+// Function name   : CalcSquareDistance
+// Description     : Calculation of Squared Distance between Locations, this method is faster for comparing 2 distances as it doesn't need to get the squareroot
+// Return type     : inline double 
+// Argument        : Location a
+// Argument        : Location b
 
 inline double CalcSquareDistance(Location a, Location b){
 	return pow( ( b.Easting - a.Easting ), 2 ) + pow( ( b.Northing - a.Northing ), 2 );
 } 
+
+
+struct DataSet{
+	// 0 = 0 to 1 km, 1 = > 1 to 2 km, 2 = > 2 to 5 km, 3 = > 5 km
+	int count[4];
+	double freq[4];
+};
 
 #endif //__HELPERMETHODS_H__

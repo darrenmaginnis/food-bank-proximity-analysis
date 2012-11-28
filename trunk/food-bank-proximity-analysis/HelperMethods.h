@@ -76,29 +76,41 @@ bool getNextLocation(ifstream &f, int offset, Location &loc)
 
 void printResults(int numProcs, DataSet data[], double elapsed)
 {
+	cout.precision(3);
 	cout << "Proximity of Residential Addresses to Foodbanks in Toronto" << endl;
 	cout << "----------------------------------------------------------" << endl;
 	cout << "Number of processes: " << numProcs << endl;
 	cout << "Elapsed Time in Seconds: " << elapsed << endl;
-	for(int i = 0; i <= numProcs; i++)
+	DataSet totals = {0};
+	for(int i = 0; i < numProcs; i++)
 	{
 		cout << "Process #" << i+1 << "for " << data[i].total << " addresses..." << endl;
 		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
 		cout << "-------------------- \t -------------- \t --------------" << endl;
-		cout << "0 - 1 \t" << data[i].count[0] <<"/t" << data[i].freq[0] << endl;
-		cout << "1 - 2 \t" << data[i].count[1] <<"/t" << data[i].freq[1] << endl;
-		cout << "2 - 5 \t" << data[i].count[2] <<"/t"  << data[i].freq[2] << endl;
-		cout << " > 5 \t"  << data[i].count[3] <<"/t" << data[i].freq[3] << endl;
+		cout << "0 - 1 \t\t\t" << data[i].count[0] <<"\t\t\t" << data[i].freq[0] << endl;
+		cout << "1 - 2 \t\t\t" << data[i].count[1] <<"\t\t\t" << data[i].freq[1] << endl;
+		cout << "2 - 5 \t\t\t" << data[i].count[2] <<"\t\t\t" << data[i].freq[2] << endl;
+		cout << " > 5 \t\t\t"  << data[i].count[3] <<"\t\t\t" << data[i].freq[3] << endl;
 
-		/*cout << "Aggregate results for all 10000 addresses..." << endl;
-		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
-		cout << "-------------------- \t -------------- \t --------------" << endl;
-		cout << "0 - 1 \t" << data[i].count[0] <<"/t" << data[i].freq[0] << endl;
-		cout << "1 - 2 \t" << data[i].count[1] <<"/t" << data[i].freq[1] << endl;
-		cout << "2 - 5 \t" << data[i].count[2] <<"/t"  << data[i].freq[2] << endl;
-		cout << " > 5 \t"  << data[i].count[3] <<"/t" << data[i].freq[3] << endl;*/
+		totals.count[0]+= data[i].count[0];
+		totals.count[1]+= data[i].count[1];
+		totals.count[2]+= data[i].count[2];
+		totals.count[3]+= data[i].count[3];
+		totals.freq[0]+= data[i].freq[0];
+		totals.freq[1]+= data[i].freq[1];
+		totals.freq[2]+= data[i].freq[2];
+		totals.freq[3]+= data[i].freq[3];
+		totals.total += data[i].total;
 		
 	}
+		
+		cout << "Aggregate results for all " <<  totals.total << "addresses..."  << endl;
+		cout << "Nearest Foodbank(km) \t # of Addresses \t % of Addresses" << endl;
+		cout << "-------------------- \t -------------- \t --------------" << endl;
+		cout << "0 - 1 \t\t\t" << totals.count[0] <<"\t\t\t" << totals.freq[0] << endl;
+		cout << "1 - 2 \t\t\t" << totals.count[1] <<"\t\t\t" << totals.freq[1] << endl;
+		cout << "2 - 5 \t\t\t" << totals.count[2] <<"\t\t\t" << totals.freq[2] << endl;
+		cout << " > 5 \t\t\t"  << totals.count[3] <<"\t\t\t" << totals.freq[3] << endl;
 
 }
 

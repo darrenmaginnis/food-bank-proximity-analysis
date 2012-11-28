@@ -65,12 +65,20 @@ bool getNextLocation(ifstream &f, int offset, Location &loc)
 	return true;
 }
 
-void printResults(int numProcs, DataSet data[])
+
+// Function name   : printResults
+// Description     : Print out the results
+// Return type     : void 
+// Argument        : int numProcs
+// Argument        : DataSet data[]
+// Argument        : double elapsed
+
+void printResults(int numProcs, DataSet data[], double elapsed)
 {
 	cout << "Proximity of Residential Addresses to Foodbanks in Toronto" << endl;
 	cout << "----------------------------------------------------------" << endl;
 	cout << "Number of processes: " << numProcs;
-	cout << "Elapsed Time in Seconds: ";
+	cout << "Elapsed Time in Seconds: " << elapsed;
 	for(int i = 0; i <= numProcs; i++)
 	{
 		cout << "Process #" << i+1 << "for 3333" << " addresses..." << endl;
@@ -123,7 +131,7 @@ MPI_Datatype createDataSetType()
 	indices[1] *= 4;
 
 	// Call the datatype constructor
-	MPI_Type_struct(8, blocklens, indices, oldTypes, &newType);
+	MPI_Type_struct(2, blocklens, indices, oldTypes, &newType);
 
 	// Commit the new datatype
 	MPI_Type_commit(&newType);
